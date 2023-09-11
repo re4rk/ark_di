@@ -1,10 +1,9 @@
 package com.re4rk.arkdi
 
 import com.re4rk.arkdi.util.runCompile
+import com.re4rk.arkdi.util.toSource
 import com.tschuchort.compiletesting.KotlinCompilation
-import com.tschuchort.compiletesting.SourceFile
 import org.assertj.core.api.Assertions.assertThat
-import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
 class ArkProcessorTest {
@@ -47,8 +46,4 @@ class ArkProcessorTest {
         // then
         assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
     }
-
-    private fun toSource(@Language(value = "kotlin") string: String) = SourceFile.kotlin("KClass.kt", string)
-
-    private fun String.toSourceFile() = SourceFile.kotlin("KClass.kt", this)
 }
