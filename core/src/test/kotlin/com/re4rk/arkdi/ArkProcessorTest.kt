@@ -52,11 +52,12 @@ class ArkProcessorTest {
         // given
         val source = toSource(
             """
+        package com.re4rk.arkdi.test
         import com.re4rk.arkdi.Provides
         
         class KClass {
             @Provides
-            fun test() = "test"
+            fun provideTest(A: String, B: String) = "test" + A + B
         }
             """.trimIndent(),
         )
