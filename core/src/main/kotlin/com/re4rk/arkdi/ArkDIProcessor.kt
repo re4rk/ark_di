@@ -5,6 +5,8 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.ksp.writeTo
 
 class ArkDIProcessor : SymbolProcessor {
     private lateinit var codeGenerator: CodeGenerator
@@ -16,6 +18,14 @@ class ArkDIProcessor : SymbolProcessor {
     }
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
+        resolver.getSymbolsWithAnnotation(Provides::class.java.canonicalName).toList().map {
+            FactoryGenerator().generate(it::class)
+            FileSpec.builder("com.re4rk.arkdi", "Factoryaaa")
+                .addType(FactoryGenerator().generate(it::class))
+                .build()
+                .writeTo(codeGenerator = codeGenerator, aggregating = false)
+        }
+
         return emptyList()
     }
 
