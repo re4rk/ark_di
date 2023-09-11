@@ -17,6 +17,9 @@ dependencies {
     // ksp
     implementation("com.google.devtools.ksp", "symbol-processing-api", "1.9.10-1.0.13")
 
+    // kotlin-compile-testing
+    testImplementation("com.github.tschuchortdev", "kotlin-compile-testing-ksp", "1.5.0")
+
     // junit 5
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.8.2")
 
