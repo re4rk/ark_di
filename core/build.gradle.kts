@@ -14,6 +14,8 @@ repositories {
 }
 
 dependencies {
+    // kotlinpoet
+    implementation("com.squareup:kotlinpoet-ksp:1.10.2")
     // ksp
     implementation("com.google.devtools.ksp", "symbol-processing-api", "1.9.10-1.0.13")
 
@@ -45,5 +47,10 @@ tasks {
 
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
+
+        configureEach {
+            kotlinOptions.freeCompilerArgs += "-Xopt-in=com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview"
+        }
     }
 }
+
