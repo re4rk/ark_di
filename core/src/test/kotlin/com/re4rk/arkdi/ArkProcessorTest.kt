@@ -69,5 +69,10 @@ class ArkProcessorTest {
 
         // and
         assertThat(KotlinCompilation().getGeneratedFiles().size).isEqualTo(1)
+
+        // and
+        KotlinCompilation().getGeneratedFiles().map {
+            println(it.readText())
+        }
     }
 }
