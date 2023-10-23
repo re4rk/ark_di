@@ -30,8 +30,8 @@ class FactoryGenerator {
     }
 
     private fun TypeSpec.Builder.addProperties(parameters: List<KSValueParameter>): TypeSpec.Builder {
-        PropertyGenerator().generate(parameters)
-            .forEach { propertySpec -> this.addProperty(propertySpec) }
+        PropertyGenerator().generateProviderType(parameters)
+            .forEach { typeName -> this.addProperty(typeName) }
         return this
     }
 
@@ -66,17 +66,9 @@ class FactoryGenerator {
     }
 
     private fun TypeSpec.Builder.addGetter(function: KSFunctionDeclaration): TypeSpec.Builder {
-        val parameters = function.parameters.map {
-            ParameterSpec.builder(
-                it.name!!.asString(),
-                generateProviderType(it.type.resolve().toTypeName()),
-            ).build()
-        }
-
         return this.addFunction(
             FunSpec.builder("get")
                 .addModifiers(KModifier.OVERRIDE)
-                .addParameters(parameters)
                 .returns(function.returnType?.toTypeName() ?: throw Exception("returnType is null"))
                 .addStatement(buildReturnStatementString(function))
                 .build(),
@@ -85,7 +77,7 @@ class FactoryGenerator {
 
     private fun buildReturnStatementString(function: KSFunctionDeclaration): String {
         val functionName = function.simpleName.getShortName()
-        val parameters = function.parameters.joinToString { it.name!!.asString() }
-        return "return $functionName.get($parameters)"
+        val parameters = function.parameters.joinToString { it.name!!.asString() + ".get()" }
+        return "return $functionName($parameters)"
     }
 }
