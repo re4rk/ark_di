@@ -36,6 +36,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
     implementation(kotlin("reflect"))
 
+    // Inject
+    implementation("javax.inject:javax.inject:1")
+
     // kotlin test
     testImplementation(kotlin("test"))
 }
@@ -53,4 +56,3 @@ tasks {
         }
     }
 }
-
