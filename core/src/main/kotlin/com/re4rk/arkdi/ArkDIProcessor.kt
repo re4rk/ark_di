@@ -22,8 +22,11 @@ class ArkDIProcessor : SymbolProcessor {
         resolver.getSymbolsWithAnnotation(Provides::class.java.canonicalName)
             .filterIsInstance<KSFunctionDeclaration>().toList()
             .map { function ->
-                FileSpec.builder("com.re4rk.arkdi", "${function.simpleName.getShortName()}Factory")
-                    .addImport(function.qualifiedName?.getQualifier() ?: "", function.qualifiedName?.getShortName() ?: "")
+                val qualifiedName: String = function.qualifiedName?.getQualifier().toString()
+                val shortName: String = function.qualifiedName?.getShortName().toString()
+
+                FileSpec.builder("com.re4rk.arkdi", "${shortName}Factory")
+                    .addImport(qualifiedName, shortName)
                     .addType(FactoryGenerator().generate(function))
                     .build()
                     .writeTo(codeGenerator = codeGenerator, aggregating = false)
