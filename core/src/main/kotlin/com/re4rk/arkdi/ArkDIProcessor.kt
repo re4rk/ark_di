@@ -6,8 +6,6 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.ksp.writeTo
 
 class ArkDIProcessor : SymbolProcessor {
     private lateinit var codeGenerator: CodeGenerator
@@ -16,20 +14,14 @@ class ArkDIProcessor : SymbolProcessor {
     fun init(codeGenerator: CodeGenerator, logger: KSPLogger) {
         this.codeGenerator = codeGenerator
         this.logger = logger
+        logger.warn("Processor 시작")
     }
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver.getSymbolsWithAnnotation(Provides::class.java.canonicalName)
-            .filterIsInstance<KSFunctionDeclaration>().toList()
+            .filterIsInstance<KSFunctionDeclaration>()
             .map { function ->
-                val qualifiedName: String = function.qualifiedName?.getQualifier().toString()
-                val shortName: String = function.qualifiedName?.getShortName().toString()
-
-                FileSpec.builder("com.re4rk.arkdi", "${shortName}Factory")
-                    .addImport(qualifiedName, shortName)
-                    .addType(FactoryGenerator().generate(function))
-                    .build()
-                    .writeTo(codeGenerator = codeGenerator, aggregating = false)
+                function.accept(FactoryVisitor(codeGenerator, logger), Unit)
             }
 
         return emptyList()
