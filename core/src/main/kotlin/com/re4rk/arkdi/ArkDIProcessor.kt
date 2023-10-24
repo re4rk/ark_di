@@ -1,5 +1,6 @@
 package com.re4rk.arkdi
 
+import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -17,11 +18,15 @@ class ArkDIProcessor : SymbolProcessor {
         logger.warn("Processor 시작")
     }
 
+    @OptIn(KspExperimental::class)
     override fun process(resolver: Resolver): List<KSAnnotated> {
+        logger.warn("process 시작")
+        val packagePath = "com.re4rk.arkdi"
         resolver.getSymbolsWithAnnotation(Provides::class.java.canonicalName)
-            .filterIsInstance<KSFunctionDeclaration>()
+            .filterIsInstance<KSFunctionDeclaration>().toList()
             .map { function ->
-                function.accept(FactoryVisitor(codeGenerator, logger), Unit)
+                logger.warn("function: $function")
+                function.accept(FactoryVisitor(codeGenerator, logger, packagePath), Unit)
             }
 
         return emptyList()
