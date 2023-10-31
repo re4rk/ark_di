@@ -29,6 +29,13 @@ class ArkDIProcessor : SymbolProcessor {
                 function.accept(FactoryVisitor(codeGenerator, logger, packagePath), Unit)
             }
 
+        if (
+            codeGenerator.generatedFile.isEmpty() &&
+            resolver.getNewFiles().toList().none { it.fileName == "ArkComponent.kt" }
+        ) {
+            val provides = resolver.getNewFiles().filter { it.fileName.contains("provide") }.toList()
+            ArkComponentGenerator().generate(codeGenerator, logger, provides)
+        }
         return emptyList()
     }
 
