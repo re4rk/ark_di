@@ -2,16 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.9.10"
-    id("org.jlleitschuh.gradle.ktlint")
     id("org.jetbrains.kotlin.kapt")
 }
 
 group = "com.re4rk"
 version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     // kotlinpoet
