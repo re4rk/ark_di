@@ -12,5 +12,10 @@ repositories {
 }
 
 allprojects {
+    repositories {
+        mavenCentral()
+        google()
+    }
+
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 }
