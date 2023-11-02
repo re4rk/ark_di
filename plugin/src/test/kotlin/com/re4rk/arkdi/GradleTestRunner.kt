@@ -151,13 +151,13 @@ class GradleTestRunner(val tempFolder: TemporaryFolder) {
 
         plugins {
           id '${if (isAppProject) "com.android.application" else "com.android.library"}'
-          id 'com.google.dagger.hilt.android'
           ${pluginIds.joinToString(separator = "\n") { "id '$it'" }}
         }
 
         android {
           compileSdkVersion 32
-          buildToolsVersion "32.0.0"
+          
+          namespace "minimal"
 
           defaultConfig {
             ${if (isAppProject) "applicationId \"plugin.test\"" else ""}
@@ -166,8 +166,8 @@ class GradleTestRunner(val tempFolder: TemporaryFolder) {
           }
 
           compileOptions {
-              sourceCompatibility JavaVersion.VERSION_11
-              targetCompatibility JavaVersion.VERSION_11
+              sourceCompatibility JavaVersion.VERSION_17
+              targetCompatibility JavaVersion.VERSION_17
           }
           ${additionalAndroidOptions.joinToString(separator = "\n")}
         }
@@ -183,10 +183,6 @@ class GradleTestRunner(val tempFolder: TemporaryFolder) {
         dependencies {
           implementation(platform('org.jetbrains.kotlin:kotlin-bom:1.8.0'))
           ${dependencies.joinToString(separator = "\n")}
-        }
-
-        hilt {
-          ${hiltOptions.joinToString(separator = "\n")}
         }
         ${additionalClosures.joinToString(separator = "\n")}
                     """.trimIndent(),
@@ -217,8 +213,7 @@ class GradleTestRunner(val tempFolder: TemporaryFolder) {
         <?xml version="1.0" encoding="utf-8"?>
         <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="minimal">
             <application
-                android:name="${appClassName ?: "android.app.Application"}"
-                android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+                android:name="${appClassName ?: "android.app.Application"}">
                 ${activities.joinToString(separator = "\n")}
             </application>
         </manifest>
