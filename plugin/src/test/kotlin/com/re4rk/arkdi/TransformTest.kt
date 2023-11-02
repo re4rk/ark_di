@@ -55,9 +55,11 @@ class TransformTest {
     fun testAssemble() {
         gradleRunner.addDependencies(
             "implementation 'androidx.appcompat:appcompat:1.1.0'",
-            // "implementation 'com.google.dagger:hilt-android:LOCAL-SNAPSHOT'",
-            // "annotationProcessor 'com.google.dagger:hilt-compiler:LOCAL-SNAPSHOT'",
         )
+        gradleRunner.addPluginId(
+            "com.re4rk.plugin.ark-di-plugin",
+        )
+
         gradleRunner.addActivities(
             "<activity android:name=\".MainActivity\"/>",
         )

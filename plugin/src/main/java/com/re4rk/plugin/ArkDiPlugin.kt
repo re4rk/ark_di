@@ -10,7 +10,7 @@ import java.util.Date
 
 class ArkDiPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        println("Hello")
+        println("[ArkDiPlugin] apply")
         project.android().variants().all { variant ->
 
             val myTask = "myFirstTask${variant.name.capitalize()}"

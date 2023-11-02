@@ -31,7 +31,7 @@ dependencies {
 gradlePlugin {
     plugins {
         register("ArkDiPlugin") {
-            id = "ArkDiPlugin"
+            id = "com.re4rk.plugin.ark-di-plugin"
             implementationClass = "com.re4rk.plugin.ArkDiPlugin"
         }
     }
