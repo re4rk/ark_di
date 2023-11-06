@@ -1,7 +1,11 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "1.9.10"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0" apply true
     `kotlin-dsl`
+
+    id("maven-publish")
 }
 
 dependencies {
@@ -28,11 +32,37 @@ dependencies {
     testImplementation("org.javassist:javassist:3.27.0-GA")
 }
 
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
+
+group = "com.re4rk"
+version = "0.1"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
+
 gradlePlugin {
     plugins {
         register("ArkDiPlugin") {
             id = "com.re4rk.plugin.ark-di-plugin"
             implementationClass = "com.re4rk.plugin.ArkDiPlugin"
         }
+    }
+}
+
+publishing {
+    repositories {
+        mavenLocal()
     }
 }

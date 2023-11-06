@@ -3,6 +3,8 @@ plugins {
 
     // KSP
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+
+    id("com.re4rk.plugin.ark-di-plugin")
 }
 
 group = "org.example"
