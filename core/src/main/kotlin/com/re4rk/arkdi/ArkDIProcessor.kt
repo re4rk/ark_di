@@ -6,6 +6,7 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 
 class ArkDIProcessor : SymbolProcessor {
@@ -36,6 +37,13 @@ class ArkDIProcessor : SymbolProcessor {
             val provides = resolver.getNewFiles().filter { it.fileName.contains("provide") }.toList()
             ArkComponentGenerator().generate(codeGenerator, logger, provides)
         }
+
+        resolver.getSymbolsWithAnnotation(Injectable::class.java.canonicalName)
+            .filterIsInstance<KSClassDeclaration>().toList()
+            .map { clazz ->
+                logger.warn("clazz: $clazz")
+                InjectableGenerator(codeGenerator).generate(clazz)
+            }
         return emptyList()
     }
 

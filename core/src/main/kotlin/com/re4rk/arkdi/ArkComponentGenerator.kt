@@ -29,6 +29,8 @@ class ArkComponentGenerator {
             it.declarations.map { declaration -> declaration as KSClassDeclaration }
         }
 
+        typeSpecBuilder.superclass(Injector::class.asClassName())
+
         val parameterMap = classes.associateBy {
             Provider::class.asClassName().parameterizedBy(
                 it.getDeclaredFunctions()
@@ -55,7 +57,10 @@ class ArkComponentGenerator {
         ksClassDeclaration.accept(
             object : KSVisitorVoid() {
 
-                override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
+                override fun visitClassDeclaration(
+                    classDeclaration: KSClassDeclaration,
+                    data: Unit,
+                ) {
                     val shortName = classDeclaration.simpleName.getShortName()
                     val packageName = classDeclaration.packageName.asString()
 
